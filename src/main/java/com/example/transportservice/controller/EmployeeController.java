@@ -44,6 +44,20 @@ public class EmployeeController {
         }
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<ApiResponse<Employee>> updateEmployee(@PathVariable Long id,@RequestBody Employee employee){
+        Employee emp = employeeService.updateEmployee(id, employee);
+        ApiResponse<Employee> response;
+        if(emp != null){
+            response = new ApiResponse<>(200, "Employee updated", emp);
+            return ResponseEntity.ok(response);
+        }else{
+            response = new ApiResponse<>(404 , "Employee not found", emp);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+        
+    }
+
 
 
 

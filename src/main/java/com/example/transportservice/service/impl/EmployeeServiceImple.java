@@ -10,7 +10,7 @@ public class EmployeeServiceImple implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeServiceImple(EmployeeRepository employeeRepository){
+    public EmployeeServiceImple(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
@@ -22,5 +22,17 @@ public class EmployeeServiceImple implements EmployeeService {
     @Override
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Employee updateEmployee(Long id, Employee employee) {
+        Employee emp = employeeRepository.findById(id).orElse(null);
+        if (emp == null) {
+            return null;
+        }
+        emp.setName(employee.getName());
+        emp.setEmail(employee.getEmail());
+
+        return employeeRepository.save(emp);
     }
 }
