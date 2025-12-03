@@ -17,6 +17,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse<String>> generalException(Exception exception) {
+        ApiResponse<String> respnse = new ApiResponse<>(500, "Somthing went wrong : " + exception.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(respnse);
+    }
+
     @ExceptionHandler(EmployeeException.class)
     public ResponseEntity<ApiResponse<String>> employeeException(EmployeeException ex) {
         ApiResponse<String> response = new ApiResponse<>(400, ex.getMessage(), null);
