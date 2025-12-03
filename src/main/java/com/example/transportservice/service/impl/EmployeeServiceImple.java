@@ -1,8 +1,15 @@
 package com.example.transportservice.service.impl;
 
+import com.example.transportservice.dto.employee.request.EmployeeCreateRequestDto;
+import com.example.transportservice.dto.employee.response.EmployeeResponseDto;
+import com.example.transportservice.exception.EmployeeException;
+import com.example.transportservice.mapper.EmployeeMapper;
 import com.example.transportservice.model.Employee;
 import com.example.transportservice.repo.EmployeeRepository;
 import com.example.transportservice.service.EmployeeService;
+
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,24 +22,12 @@ public class EmployeeServiceImple implements EmployeeService {
     }
 
     @Override
-    public Employee registerEmployee(Employee employee) {
-        return employeeRepository.save(employee);
-    }
-
-    @Override
-    public Employee getEmployeeById(Long id) {
-        return employeeRepository.findById(id).orElse(null);
-    }
-
-    @Override
-    public Employee updateEmployee(Long id, Employee employee) {
-        Employee emp = employeeRepository.findById(id).orElse(null);
-        if (emp == null) {
-            return null;
+    public EmployeeResponseDto createEmployee(EmployeeCreateRequestDto requestDto) {
+        Optional<Employee> employee = employeeRepository.findByEmail(requestDto.getEmail());
+        if (employee.isPresent()) {
+            throw new EmployeeException("Employee Already Registered");
         }
-        emp.setName(employee.getName());
-        emp.setEmail(employee.getEmail());
-
-        return employeeRepository.save(emp);
+        Employee saved = employeeRepository.save(EmployeeMapper.toEntity(requestDto));
+        return EmployeeMapper.toResponse(saved);
     }
 }

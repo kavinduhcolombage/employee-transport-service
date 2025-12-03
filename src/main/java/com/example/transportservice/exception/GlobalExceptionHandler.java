@@ -10,11 +10,17 @@ import com.example.transportservice.payload.ApiResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiResponse<?>> handleMissingBody(HttpMessageNotReadableException ex){
+    public ResponseEntity<ApiResponse<?>> handleMissingBody(HttpMessageNotReadableException ex) {
         ApiResponse<?> response = new ApiResponse<>(400, "Invalid or Missing Request Body", null);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
-    
+
+    @ExceptionHandler(EmployeeException.class)
+    public ResponseEntity<ApiResponse<String>> employeeException(EmployeeException ex) {
+        ApiResponse<String> response = new ApiResponse<>(400, ex.getMessage(), null);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
 }

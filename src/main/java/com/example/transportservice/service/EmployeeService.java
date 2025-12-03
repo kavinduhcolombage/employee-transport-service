@@ -1,9 +1,8 @@
 package com.example.transportservice.service;
 
-import com.example.transportservice.model.Employee;
+import com.example.transportservice.dto.employee.request.EmployeeCreateRequestDto;
+import com.example.transportservice.dto.employee.response.EmployeeResponseDto;
 
 public interface EmployeeService {
-    Employee registerEmployee(Employee employee);
-    Employee getEmployeeById(Long id);
-    Employee updateEmployee(Long id, Employee employee);
+    EmployeeResponseDto createEmployee(EmployeeCreateRequestDto requestDto);
 }
