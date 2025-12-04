@@ -4,6 +4,7 @@ import com.example.transportservice.dto.employee.request.EmployeeCreateRequestDt
 import com.example.transportservice.dto.employee.request.EmployeeUpdateRequestDto;
 import com.example.transportservice.dto.employee.response.EmployeeResponseDto;
 import com.example.transportservice.exception.EmployeeException;
+import com.example.transportservice.exception.EmployeeNotFoundException;
 import com.example.transportservice.mapper.EmployeeMapper;
 import com.example.transportservice.model.Employee;
 import com.example.transportservice.repo.EmployeeRepository;
@@ -35,7 +36,7 @@ public class EmployeeServiceImple implements EmployeeService {
     @Override
     public EmployeeResponseDto updateEmployee(Long id, EmployeeUpdateRequestDto requestDto) {
         Employee employee = employeeRepository.findById(id)
-                .orElseThrow(() -> new EmployeeException("Employee not found"));
+                .orElseThrow(() -> new EmployeeNotFoundException("Employee not found"));
         if (requestDto.getFirstName() != null && !requestDto.getFirstName().isEmpty()) {
             employee.setFirstName(requestDto.getFirstName());
         }
