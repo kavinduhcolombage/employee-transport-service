@@ -1,6 +1,7 @@
 package com.example.transportservice.service.impl;
 
 import com.example.transportservice.dto.employee.request.EmployeeCreateRequestDto;
+import com.example.transportservice.dto.employee.request.EmployeeUpdateRequestDto;
 import com.example.transportservice.dto.employee.response.EmployeeResponseDto;
 import com.example.transportservice.exception.EmployeeException;
 import com.example.transportservice.mapper.EmployeeMapper;
@@ -29,5 +30,28 @@ public class EmployeeServiceImple implements EmployeeService {
         }
         Employee saved = employeeRepository.save(EmployeeMapper.toEntity(requestDto));
         return EmployeeMapper.toResponse(saved);
+    }
+
+    @Override
+    public EmployeeResponseDto updateEmployee(Long id, EmployeeUpdateRequestDto requestDto) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new EmployeeException("Employee not found"));
+        if (requestDto.getFirstName() != null && !requestDto.getFirstName().isEmpty()) {
+            employee.setFirstName(requestDto.getFirstName());
+        }
+        if (requestDto.getLastName() != null && !requestDto.getLastName().isEmpty()) {
+            employee.setLastName(requestDto.getLastName());
+        }
+        if (requestDto.getPhone() != null && !requestDto.getPhone().isEmpty()) {
+            employee.setPhone(requestDto.getPhone());
+        }
+        if (requestDto.getPassword() != null && !requestDto.getPassword().isEmpty()) {
+            employee.setPassword(requestDto.getPassword());
+        }
+
+        Employee updatedEmployee = employeeRepository.save(employee);
+
+        return EmployeeMapper.toResponse(updatedEmployee);
+
     }
 }
