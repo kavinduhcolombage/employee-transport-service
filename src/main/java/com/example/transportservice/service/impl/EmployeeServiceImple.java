@@ -13,6 +13,7 @@ import com.example.transportservice.service.EmployeeService;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmployeeServiceImple implements EmployeeService {
@@ -23,6 +24,7 @@ public class EmployeeServiceImple implements EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
+    @Transactional
     @Override
     public EmployeeResponseDto createEmployee(EmployeeCreateRequestDto requestDto) {
         Optional<Employee> employee = employeeRepository.findByEmail(requestDto.getEmail());
@@ -33,6 +35,7 @@ public class EmployeeServiceImple implements EmployeeService {
         return EmployeeMapper.toResponse(saved);
     }
 
+    @Transactional
     @Override
     public EmployeeResponseDto updateEmployee(Long id, EmployeeUpdateRequestDto requestDto) {
         Employee employee = employeeRepository.findById(id)
@@ -54,5 +57,12 @@ public class EmployeeServiceImple implements EmployeeService {
 
         return EmployeeMapper.toResponse(updatedEmployee);
 
+    }
+
+    @Transactional
+    @Override
+    public void deleteEmployee(Long id) {
+        Employee employee = employeeRepository.findById(id).orElseThrow(()-> new EmployeeException("Employee not found"));
+        employeeRepository.delete(employee);
     }
 }

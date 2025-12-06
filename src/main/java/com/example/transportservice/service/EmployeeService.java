@@ -7,4 +7,5 @@ import com.example.transportservice.dto.employee.response.EmployeeResponseDto;
 public interface EmployeeService {
     EmployeeResponseDto createEmployee(EmployeeCreateRequestDto requestDto);
     EmployeeResponseDto updateEmployee(Long id, EmployeeUpdateRequestDto requestDto);
+    void deleteEmployee(Long id);
 }
